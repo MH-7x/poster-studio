@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poster Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:wght@700;800&family=Poppins:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Oswald:wght@400;500;700&family=Raleway:wght@400;600;800;900&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700;800;900&family=Bebas+Neue&family=Anton&family=Archivo+Black&family=Abril+Fatface&family=Lobster&family=Pacifico&family=Dancing+Script:wght@400;700&family=Permanent+Marker&family=Righteous&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15h18M9 15v6"/></symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+    <symbol id="i-brand" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .9-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.9z"/></symbol>
+    <symbol id="i-color" viewBox="0 0 24 24"><path d="M12 2.7C7 8 5 11 5 14a7 7 0 0 0 14 0c0-3-2-6-7-11.3z"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brandmark"><span class="dot"></span>Poster Studio</div>
+
+  <label class="size-pick" title="Canvas size">
+    <select id="sizePreset" aria-label="Canvas size">
+      <optgroup label="Instagram">
+        <option value="1080x1080">Post · 1080×1080</option>
+        <option value="1080x1350">Portrait · 1080×1350</option>
+        <option value="1080x1920">Story / Reel · 1080×1920</option>
+      </optgroup>
+      <optgroup label="Facebook">
+        <option value="1200x630">Link post · 1200×630</option>
+        <option value="820x312">Page cover · 820×312</option>
+      </optgroup>
+      <optgroup label="Other">
+        <option value="1600x900">X / Twitter · 1600×900</option>
+        <option value="1200x627">LinkedIn · 1200×627</option>
+        <option value="1280x720">YouTube thumb · 1280×720</option>
+        <option value="1000x1500">Pinterest · 1000×1500</option>
+        <option value="2480x3508">A4 print · 2480×3508</option>
+      </optgroup>
+      <option value="custom">Custom size…</option>
+    </select>
+  </label>
+
+  <div class="top-actions">
+    <button class="icon-btn" id="undo" type="button" title="Undo (Ctrl+Z)" aria-label="Undo"><svg><use href="#i-undo"/></svg></button>
+    <button class="icon-btn" id="redo" type="button" title="Redo (Ctrl+Shift+Z)" aria-label="Redo"><svg><use href="#i-redo"/></svg></button>
+    <label class="btn ghost"><svg><use href="#i-upload"/></svg><span>Photo</span><input type="file" id="photoFile" accept="image/*" hidden></label>
+    <details class="menu" id="exportMenu">
+      <summary class="btn primary"><svg><use href="#i-down"/></svg><span>Download</span></summary>
+      <div class="menu-pop">
+        <div class="seg" data-local="exportScale">
+          <button type="button" data-v="1" class="on">1× size</button>
+          <button type="button" data-v="2">2× sharp</button>
+        </div>
+        <button class="btn block" id="exportPng" type="button">PNG <small>best quality</small></button>
+        <button class="btn block" id="exportJpg" type="button">JPG <small>smaller file</small></button>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main class="app">
+  <nav class="rail" id="rail" aria-label="Editor sections">
+    <button type="button" data-tab="layout" class="on"><svg><use href="#i-layout"/></svg><span>Layout</span></button>
+    <button type="button" data-tab="photo"><svg><use href="#i-photo"/></svg><span>Photo</span></button>
+    <button type="button" data-tab="text"><svg><use href="#i-text"/></svg><span>Text</span></button>
+    <button type="button" data-tab="brand"><svg><use href="#i-brand"/></svg><span>Brand</span></button>
+    <button type="button" data-tab="colors"><svg><use href="#i-color"/></svg><span>Colors</span></button>
+    <button type="button" data-tab="library"><svg><use href="#i-save"/></svg><span>Saved</span></button>
+  </nav>
+
+  <aside class="drawer">
+
+    <!-- LAYOUT -->
+    <section data-pane="layout">
+      <h2>Frame templates</h2>
+      <div class="templates" id="templates"></div>
+
+      <h3>Fine-tune frame</h3>
+      <div class="two" id="customSize">
+        <label class="field"><span>Width (px)</span><input type="number" min="200" max="4000" data-bind="w"></label>
+        <label class="field"><span>Height (px)</span><input type="number" min="200" max="4000" data-bind="h"></label>
+      </div>
+      <label class="field"><span>Outer margin</span><input type="range" min="0" max="140" data-bind="margin"></label>
+      <label class="field"><span>Corner roundness</span><input type="range" min="0" max="160" data-bind="radius"></label>
+      <label class="field"><span>Bar padding</span><input type="range" min="10" max="90" data-bind="barPad"></label>
+      <label class="field"><span>Bar opacity</span><input type="range" min="30" max="100" data-bind="barOpacity"></label>
+      <label class="field"><span>Accent line thickness</span><input type="range" min="0" max="30" data-bind="accentSize"></label>
+    </section>
+
+    <!-- PHOTO -->
+    <section data-pane="photo" hidden>
+      <h2>Photo</h2>
+      <label class="dropzone">
+        <svg><use href="#i-upload"/></svg>
+        <strong>Upload a photo</strong>
+        <span>or drop / paste one onto the preview</span>
+        <input type="file" id="photoFile2" accept="image/*" hidden>
+      </label>
+      <p class="hint">Drag the photo in the preview to reposition it. Scroll over it to zoom.</p>
+      <label class="field"><span>Zoom</span><input type="range" min="1" max="5" step="0.01" data-bind="photo.zoom"></label>
+      <div class="two">
+        <button class="btn" type="button" id="resetPhoto">Reset position</button>
+        <button class="btn danger" type="button" id="removePhoto">Remove</button>
+      </div>
+      <h3>Adjust</h3>
+      <label class="field"><span>Brightness</span><input type="range" min="50" max="150" data-bind="photo.brightness"></label>
+      <label class="field"><span>Contrast</span><input type="range" min="50" max="150" data-bind="photo.contrast"></label>
+      <label class="field"><span>Saturation</span><input type="range" min="0" max="200" data-bind="photo.saturation"></label>
+      <label class="field"><span>Darken</span><input type="range" min="0" max="80" data-bind="photo.dim"></label>
+      <button class="btn" type="button" id="resetAdjust">Reset adjustments</button>
+    </section>
+
+    <!-- TEXT -->
+    <section data-pane="text" hidden>
+      <div class="seg wide" data-local="textTab">
+        <button type="button" data-v="headline" class="on">Headline</button>
+        <button type="button" data-v="subtitle">Subtitle</button>
+      </div>
+
+      <label class="switch"><input type="checkbox" data-bind="T.on"><i></i><b>Show this text</b></label>
+      <label class="field"><span>Text</span><textarea rows="2" data-bind="T.text"></textarea></label>
+
+      <h3>Quick styles</h3>
+      <div class="chips" id="textPresets"></div>
+
+      <h3>Type</h3>
+      <label class="field"><span>Font</span><select data-bind="T.font" data-fonts></select></label>
+      <div class="two">
+        <label class="field"><span>Weight</span>
+          <select data-bind="T.weight">
+            <option value="400">Regular</option><option value="500">Medium</option><option value="600">Semi-bold</option>
+            <option value="700">Bold</option><option value="800">Extra-bold</option><option value="900">Black</option>
+          </select>
+        </label>
+        <label class="field"><span>Color</span><input type="color" data-bind="T.C"></label>
+      </div>
+      <label class="field"><span>Size</span><input type="range" min="16" max="220" data-bind="T.size"></label>
+      <label class="field"><span>Letter spacing</span><input type="range" min="-5" max="30" step="0.5" data-bind="T.spacing"></label>
+      <label class="field"><span>Line height</span><input type="range" min="0.8" max="1.8" step="0.02" data-bind="T.lh"></label>
+      <div class="toggles">
+        <label class="switch"><input type="checkbox" data-bind="T.upper"><i></i><b>UPPERCASE</b></label>
+        <label class="switch"><input type="checkbox" data-bind="T.italic"><i></i><b>Italic</b></label>
+      </div>
+
+      <h3>Effects</h3>
+      <details class="fx">
+        <summary><label class="switch"><input type="checkbox" data-bind="T.grad"><i></i><b>Gradient fill</b></label></summary>
+        <div class="fx-body">
+          <label class="field"><span>Second color</span><input type="color" data-bind="T.color2"></label>
+        </div>
+      </details>
+      <details class="fx">
+        <summary><label class="switch"><input type="checkbox" data-bind="T.shOn"><i></i><b>Shadow / glow</b></label></summary>
+        <div class="fx-body">
+          <label class="field"><span>Color</span><input type="color" data-bind="T.shColor"></label>
+          <label class="field"><span>Opacity</span><input type="range" min="0" max="100" data-bind="T.shA"></label>
+          <label class="field"><span>Blur</span><input type="range" min="0" max="60" data-bind="T.shBlur"></label>
+          <label class="field"><span>Offset X</span><input type="range" min="-30" max="30" data-bind="T.shX"></label>
+          <label class="field"><span>Offset Y</span><input type="range" min="-30" max="30" data-bind="T.shY"></label>
+        </div>
+      </details>
+      <details class="fx">
+        <summary><label class="switch"><input type="checkbox" data-bind="T.stOn"><i></i><b>Outline</b></label></summary>
+        <div class="fx-body">
+          <label class="field"><span>Color</span><input type="color" data-bind="T.stColor"></label>
+          <label class="field"><span>Thickness</span><input type="range" min="1" max="16" data-bind="T.stWidth"></label>
+        </div>
+      </details>
+      <details class="fx">
+        <summary><label class="switch"><input type="checkbox" data-bind="T.bxOn"><i></i><b>Highlight box</b></label></summary>
+        <div class="fx-body">
+          <label class="field"><span>Color</span><input type="color" data-bind="T.bxColor"></label>
+          <label class="field"><span>Padding</span><input type="range" min="0" max="60" data-bind="T.bxPad"></label>
+          <label class="field"><span>Roundness</span><input type="range" min="0" max="50" data-bind="T.bxRadius"></label>
+        </div>
+      </details>
+
+      <h3>Placement <small>(both texts)</small></h3>
+      <div class="seg wide" data-seg="headline.pos">
+        <button type="button" data-v="top">Top</button><button type="button" data-v="center">Middle</button><button type="button" data-v="bottom">Bottom</button>
+      </div>
+      <div class="seg wide" data-seg="headline.align">
+        <button type="button" data-v="left">Left</button><button type="button" data-v="center">Center</button><button type="button" data-v="right">Right</button>
+      </div>
+      <label class="switch"><input type="checkbox" data-bind="headline.scrim"><i></i><b>Dark gradient behind text</b></label>
+      <p class="hint" id="bgTextHint" hidden>This template puts text on the background, so Position is automatic and the color shown is the “text on background” color.</p>
+    </section>
+
+    <!-- BRAND -->
+    <section data-pane="brand" hidden>
+      <h2>Logo</h2>
+      <div class="two">
+        <label class="btn"><svg><use href="#i-upload"/></svg><span>Upload logo</span><input type="file" id="logoFile" accept="image/*" hidden></label>
+        <button class="btn danger" type="button" id="removeLogo">Remove</button>
+      </div>
+      <div class="seg wide" data-seg="logo.placement">
+        <button type="button" data-v="bar-left">Bar left</button>
+        <button type="button" data-v="bar-top">Bar top</button>
+        <button type="button" data-v="photo-left">Photo L</button>
+        <button type="button" data-v="photo-right">Photo R</button>
+      </div>
+      <label class="field"><span>Logo height</span><input type="range" min="30" max="320" data-bind="logo.size"></label>
+
+      <h2>Contact bar</h2>
+      <p class="hint">Edits appear instantly and are remembered for next time.</p>
+      <div id="contactList"></div>
+      <button class="btn block" type="button" id="addContact">+ Add contact item</button>
+      <label class="field"><span>Text size</span><input type="range" min="14" max="60" data-bind="contactSize"></label>
+      <label class="field"><span>Font</span><select data-bind="font" data-fonts></select></label>
+      <div class="label">Columns</div>
+      <div class="seg wide" data-seg="cols" data-num>
+        <button type="button" data-v="0">Auto</button><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
+      </div>
+      <div class="label">Icons</div>
+      <div class="seg wide" data-seg="iconStyle">
+        <button type="button" data-v="circle">Circle</button><button type="button" data-v="plain">Plain</button><button type="button" data-v="none">None</button>
+      </div>
+    </section>
+
+    <!-- COLORS -->
+    <section data-pane="colors" hidden>
+      <h2>Color themes</h2>
+      <div class="palettes" id="palettes"></div>
+      <h3>Customize</h3>
+      <div class="colors">
+        <label><input type="color" data-bind="colors.bg"><span>Background</span></label>
+        <label><input type="color" data-bind="colors.bar"><span>Bar</span></label>
+        <label><input type="color" data-bind="colors.accent"><span>Accent</span></label>
+        <label><input type="color" data-bind="colors.barText"><span>Bar text</span></label>
+      </div>
+      <p class="hint">Headline and subtitle colors live in the Text tab.</p>
+    </section>
+
+    <!-- LIBRARY -->
+    <section data-pane="library" hidden>
+      <h2>Save this design</h2>
+      <div class="inline">
+        <input type="text" id="designName" placeholder="e.g. Summer sale">
+        <button class="btn primary" type="button" id="saveDesign">Save</button>
+      </div>
+      <p class="hint">Saved designs keep your layout, colors, text, logo and contacts (not the photo).</p>
+      <h3>Your designs</h3>
+      <div id="savedGrid" class="saved"></div>
+      <h3>Share / back up</h3>
+      <div class="two">
+        <button class="btn" type="button" id="exportJson">Export .json</button>
+        <label class="btn">Import .json<input type="file" id="importJson" accept=".json,application/json" hidden></label>
+      </div>
+      <button class="btn danger block" type="button" id="resetAll">Reset everything</button>
+    </section>
+  </aside>
+
+  <section class="stage" id="stage">
+    <div class="canvas-wrap"><canvas id="cv"></canvas></div>
+    <div class="stage-foot"><span id="dims"></span><span id="status"></span></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
