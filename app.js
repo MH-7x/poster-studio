@@ -45,7 +45,7 @@ const TEMPLATES = {
   arch:     { name: 'Arch',     d: { margin: 48, radius: 28 }, bgText: true },
   circle:   { name: 'Circle',   d: { margin: 48, radius: 0 },  bgText: true },
   magazine: { name: 'Magazine', d: { margin: 0,  radius: 0 },  bgText: true },
-  ribbon:   { name: 'Ribbon',   d: { margin: 0,  radius: 0 } },
+  ribbon:   { name: 'Ribbon',   d: { margin: 0,  radius: 0 }, noScrim: true },
   curve:    { name: 'Curve',    d: { margin: 0,  radius: 90 } },
   pill:     { name: 'Pill',     d: { margin: 48, radius: 28 }, bgText: true },
   leafr:    { name: 'Leaf Flip',d: { margin: 36, radius: 110 }, floating: true },
@@ -59,7 +59,17 @@ const TEMPLATES = {
   border:   { name: 'Border',   d: { margin: 44, radius: 0 },  floating: true },
   duotone:  { name: 'Duotone',  d: { margin: 0,  radius: 0 } },
   diagonalr:{ name: 'Slope Right', d: { margin: 0, radius: 0 } },
-  zigzag:   { name: 'Zigzag',   d: { margin: 0,  radius: 0 } }
+  zigzag:   { name: 'Zigzag',   d: { margin: 0,  radius: 0 } },
+  neon:     { name: 'Neon Frame', d: { margin: 64, radius: 36 }, floating: true },
+  cardcircle:{ name: 'Card Circle', d: { margin: 40, radius: 44 }, floating: true, barInset: 1.7, bgText: true },
+  hexside:  { name: 'Hex Side', d: { margin: 44, radius: 0 }, bgText: true, poly: [[.25, 0], [.75, 0], [1, .5], [.75, 1], [.25, 1], [0, .5]] },
+  slantpanel:{ name: 'Slant Panel', d: { margin: 0, radius: 0 }, noScrim: true },
+  glass:    { name: 'Glass Panel', d: { margin: 36, radius: 40 }, noScrim: true },
+  news:     { name: 'Headline News', d: { margin: 0, radius: 0 }, noScrim: true },
+  tilt:     { name: 'Tilt Card', d: { margin: 48, radius: 36 }, floating: true, noScrim: true },
+  octagon:  { name: 'Octagon',  d: { margin: 48, radius: 0 }, bgText: true, poly: [[.3, 0], [.7, 0], [1, .3], [1, .7], [.7, 1], [.3, 1], [0, .7], [0, .3]] },
+  fade:     { name: 'Fade',     d: { margin: 0,  radius: 0 }, bgText: true },
+  editorial:{ name: 'Editorial', d: { margin: 0, radius: 0 }, bgText: true }
 };
 
 const PALETTES = [
@@ -217,9 +227,15 @@ function measureBlocks(maxW, u) {
   ['headline', 'subtitle'].forEach(k => {
     const T = state[k];
     if (!T.on || !T.text.trim()) return;
-    const size = T.size * u;
-    setTextFont(T, size, u);
-    const lines = wrap(T.upper ? T.text.toUpperCase() : T.text, maxW - (T.bxOn ? 2 * T.bxPad * u : 0));
+    let size = T.size * u, lines;
+    const avail = maxW - (T.bxOn ? 2 * T.bxPad * u : 0), txt = T.upper ? T.text.toUpperCase() : T.text;
+    for (let pass = 0; pass < 3; pass++) {
+      setTextFont(T, size, u);
+      lines = wrap(txt, avail);
+      const widest = Math.max(...lines.map(l => ctx.measureText(l).width));
+      if (widest <= avail + 1) break;
+      size = Math.max(size * avail / widest * 0.98, T.size * u * 0.4);   // shrink so a long word never spills out of its area
+    }
     blocks.push({ k, T, size, lh: size * T.lh, lines });
   });
   resetSpacing();
@@ -242,7 +258,8 @@ function layout() {
     : T === 'wave' ? x => edgeAmp * (0.5 + 0.5 * Math.cos(x / W * Math.PI * 3))
     : T === 'zigzag' ? x => edgeAmp * Math.abs(((x / W * 8) % 2) - 1) : () => 0;
   const floating = !!TP.floating;
-  const barW = floating ? W - 2 * m : W;
+  const bi = m * (TP.barInset || 1);
+  const barW = floating ? W - 2 * bi : W;
   const innerW = barW - 2 * pad;
 
   let logoH = 0, logoW = 0;
@@ -269,12 +286,12 @@ function layout() {
   const hasBar = logoInBar || items.length > 0;
   const barH = hasBar ? contentH + 2 * pad + edgeAmp : 0;
 
-  const bar = floating ? { x: m, y: H - barH - m, w: barW, h: barH } : { x: 0, y: H - barH, w: W, h: barH };
+  const bar = floating ? { x: bi, y: H - barH - bi, w: barW, h: barH } : { x: 0, y: H - barH, w: W, h: barH };
 
   const tb = measureBlocks(W - 2 * pad, u);
   const tz = TP.bgText && tb ? tb.h + pad * 1.3 : 0;
 
-  let photo, photoR = 0, textArea = null, ring = null, offsetShape = false, splitTb = null;
+  let photo, photoR = 0, textArea = null, ring = null, offsetShape = false, splitTb = null, rot = 0, deco = null;
   const barTop = hasBar ? bar.y : H;
   switch (T) {
     case 'overlay': photo = { x: 0, y: 0, w: W, h: H }; break;
@@ -284,7 +301,71 @@ function layout() {
       textArea = { x: 0, w: W, y0: pad * 0.65, y1: tz - pad * 0.65, pos: 'top' };
       break;
     }
-    case 'framed': case 'outline': case 'leaf': case 'leafr': case 'cut': case 'border': {
+    case 'cardcircle': {
+      const card = { x: m, y: m, w: W - 2 * m, h: H - 2 * m };
+      const aBottom = hasBar ? bar.y - pad * 0.6 : H - m - pad;
+      const d = Math.max(Math.min(card.w * 0.44, aBottom - card.y - pad * 2), 60);
+      const cx = card.x + card.w - d / 2 - pad * 0.8, cy = aBottom - d / 2 - pad * 0.2;
+      photo = { x: cx - d / 2, y: cy - d / 2, w: d, h: d }; photoR = d / 2;
+      const tw = Math.max(card.w - d - pad * 3, 120);
+      splitTb = measureBlocks(tw, u);
+      textArea = { x: card.x, w: tw + 2 * pad, y0: card.y + pad * 0.9, y1: aBottom - pad, pos: 'top', align: 'left' };
+      deco = { card, cx, cy, d }; break;
+    }
+    case 'hexside': {
+      const mm = Math.max(m, pad * 0.8), availH = Math.max(barTop - 2 * mm, 100);
+      const pw = Math.min(W * 0.54, availH / 0.88);
+      photo = { x: W - mm - pw, y: mm + (availH - pw * 0.88) / 2, w: pw, h: pw * 0.88 };
+      const tw = Math.max(photo.x - mm - pad * 0.5, 120);
+      splitTb = measureBlocks(tw, u);
+      textArea = { x: mm - pad, w: tw + 2 * pad, y0: mm, y1: mm + availH, pos: 'center', align: 'left' };
+      offsetShape = true; break;
+    }
+    case 'slantpanel': {
+      photo = { x: 0, y: 0, w: W, h: H - barH };
+      const ph = photo.h, pw = W * 0.6, sl = W * 0.12, tw = Math.max(pw - sl - pad * 2, 120);
+      splitTb = measureBlocks(tw, u);
+      textArea = { x: 0, w: tw + 2 * pad, y0: pad, y1: ph - pad, pos: null, align: 'left' };
+      deco = { ph, pw, sl }; break;
+    }
+    case 'glass': {
+      photo = { x: 0, y: 0, w: W, h: H - barH };
+      const panel = { x: W * 0.5, y: m, w: W * 0.5 - m, h: Math.max(photo.h - 2 * m, 60) };
+      splitTb = measureBlocks(Math.max(panel.w - 2 * pad, 120), u);
+      textArea = { x: panel.x, w: panel.w, y0: panel.y + pad, y1: panel.y + panel.h - pad, pos: null, align: 'left' };
+      deco = { panel }; break;
+    }
+    case 'news': photo = { x: 0, y: 0, w: W, h: H - barH }; break;
+    case 'tilt': {
+      const bottom = hasBar ? bar.y - m * 0.5 : H - m, availH = Math.max(bottom - m, 100);
+      const pw = Math.min((W - 2 * m) * 0.5, availH / 1.2), ph = Math.min(pw * 1.25, availH);
+      photo = { x: W - m - pw - pad * 0.4, y: m + (availH - ph) / 2, w: pw, h: ph }; photoR = r; rot = -0.07;
+      const tw = Math.max(photo.x - m - pad * 1.4, 120);
+      splitTb = measureBlocks(tw, u);
+      textArea = { x: m, w: tw + 2 * pad, y0: m + pad, y1: bottom - pad, pos: null, align: 'left' };
+      break;
+    }
+    case 'octagon': {
+      const mm = Math.max(m, pad * 0.8), availH = Math.max(barTop - 2 * mm, 100);
+      const s = Math.min(W * 0.5, availH);
+      photo = { x: mm, y: mm + (availH - s) / 2, w: s, h: s };
+      const tx = photo.x + s + mm * 0.5, tw = Math.max(W - mm - tx, 120);
+      splitTb = measureBlocks(tw, u);
+      textArea = { x: tx - pad, w: tw + 2 * pad, y0: mm, y1: mm + availH, pos: 'center', align: 'right' };
+      offsetShape = true; break;
+    }
+    case 'fade': {
+      photo = { x: 0, y: 0, w: W, h: H - barH };
+      textArea = { x: 0, w: W, y0: pad, y1: barTop - pad, pos: 'bottom', align: 'center' }; break;
+    }
+    case 'editorial': {
+      const ty0 = pad * 3, th = tb ? tb.h : 0, lineH = Math.max(ac * 1.5, 6 * u);
+      const lineY = ty0 + th + pad * 0.35, zoneBottom = tb ? lineY + lineH : ty0, pTop = zoneBottom + pad * 0.8;
+      photo = { x: 0, y: pTop, w: W, h: Math.max(barTop - pTop, 60) };
+      textArea = { x: 0, w: W, y0: ty0, y1: ty0 + th, pos: 'top', align: 'left' };
+      deco = { lineY, lineH, hasText: !!tb }; break;
+    }
+    case 'framed': case 'outline': case 'leaf': case 'leafr': case 'cut': case 'border': case 'neon': {
       const bottom = hasBar ? bar.y - m * 0.6 : H - m;
       photo = { x: m, y: m, w: W - 2 * m, h: bottom - m };
       photoR = T === 'leaf' ? [r, 0, r, 0] : T === 'leafr' ? [0, r, 0, r] : r; break;
@@ -336,7 +417,7 @@ function layout() {
       y1: Math.min(photo.y + photo.h, hasBar ? bar.y - (floating ? pad * 0.3 : 0) : Infinity) - pad, pos: null };
   }
   return { u, m, pad, r, ac, items, logoInBar, logoW, logoH, left, gridW, fs, iconS, gap, cols, rows, rowH, gridH, cellW,
-    contentH, hasBar, barH, bar, photo, photoR, edgeAmp, edge, floating, tb: splitTb || tb, textArea, ring, offsetShape, poly: TP.poly || null };
+    contentH, hasBar, barH, bar, photo, photoR, edgeAmp, edge, floating, tb: splitTb || tb, textArea, ring, offsetShape, poly: TP.poly || null, rot, deco, barTop };
 }
 
 /* =====================================================================
@@ -401,6 +482,7 @@ function render(forExport) {
   ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; resetSpacing();
 
   ctx.fillStyle = S.colors.bg; ctx.fillRect(0, 0, S.w, S.h);
+  drawDecor(L, 'under');
 
   // offset accent shape (pop / arch)
   if (L.offsetShape && L.m > 0) {
@@ -418,13 +500,18 @@ function render(forExport) {
   // curve: bar color behind the rounded photo corners
   if (T === 'curve') { ctx.fillStyle = S.colors.bar; ctx.fillRect(0, photo.y + photo.h - L.r * 2, S.w, S.h); }
 
-  // photo
+  // photo (tilt layouts rotate it around its centre)
+  let rotated = false;
+  if (L.rot) {
+    const rx = photo.x + photo.w / 2, ry = photo.y + photo.h / 2;
+    ctx.save(); ctx.translate(rx, ry); ctx.rotate(L.rot); ctx.translate(-rx, -ry); rotated = true;
+  }
   ctx.save();
   shapePath(L, photo.x, photo.y, photo.w, photo.h); ctx.clip();
   if (photoImg) {
-    const c = coverParams(photo), P = S.photo, duo = T === 'duotone';
-    const f = (duo || P.brightness !== 100 || P.contrast !== 100 || P.saturation !== 100) && 'filter' in ctx;
-    if (f) ctx.filter = `brightness(${P.brightness}%) contrast(${P.contrast}%) saturate(${duo ? 0 : P.saturation}%)${duo ? ' contrast(1.15)' : ''}`;
+    const c = coverParams(photo), P = S.photo, duo = T === 'duotone', gray = duo || T === 'news';
+    const f = (gray || P.brightness !== 100 || P.contrast !== 100 || P.saturation !== 100) && 'filter' in ctx;
+    if (f) ctx.filter = `brightness(${P.brightness}%) contrast(${P.contrast}%) saturate(${gray ? 0 : P.saturation}%)${duo ? ' contrast(1.15)' : ''}`;
     ctx.drawImage(photoImg, c.x, c.y, c.dw, c.dh);
     if (f) ctx.filter = 'none';
     if (duo) {
@@ -445,7 +532,7 @@ function render(forExport) {
     }
   }
   const tb = L.tb, H = S.headline;
-  if (!TP.bgText && T !== 'ribbon' && H.scrim && tb && H.pos !== 'center') {
+  if (!TP.bgText && !TP.noScrim && H.scrim && tb && H.pos !== 'center') {
     const h = tb.h + pad * 3, ta = L.textArea;
     if (H.pos === 'top') {
       const g = ctx.createLinearGradient(0, photo.y, 0, photo.y + h);
@@ -459,6 +546,9 @@ function render(forExport) {
     }
   }
   ctx.restore();
+  if (T === 'tilt') { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 8 * u; shapePath(L, photo.x, photo.y, photo.w, photo.h); ctx.stroke(); }
+  if (rotated) ctx.restore();
+  drawDecor(L, 'over');
 
   // logo on photo
   if (logoImg && S.logo.placement.startsWith('photo')) {
@@ -466,7 +556,7 @@ function render(forExport) {
     ctx.drawImage(logoImg, lx, photo.y + pad, L.logoW, L.logoH);
   }
 
-  if (tb) drawText(tb, L.textArea, pad, u, TP.bgText, T === 'ribbon' ? S.colors.bar : null);
+  if (tb) drawText(tb, L.textArea, pad, u, TP.bgText, bandFor(L, T));
   if (L.hasBar) drawBar(L, T);
 
   // border template: thick accent frame
@@ -484,19 +574,96 @@ function render(forExport) {
   return L;
 }
 
+// A coloured band drawn behind the text block (Ribbon, Headline News)
+function bandFor(L, T) {
+  const S = state, ta = L.textArea, pad = L.pad, ac = L.ac;
+  if (T === 'ribbon') return (y, h) => { ctx.fillStyle = S.colors.bar; ctx.fillRect(ta.x, y - pad * 0.5, ta.w, h + pad); };
+  if (T === 'news') return (y, h) => {
+    const x0 = ta.x, x1 = ta.x + ta.w * 0.88, sk = pad * 1.2, y0 = y - pad * 0.5, y1 = y + h + pad * 0.5;
+    ctx.fillStyle = S.colors.bar;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y0); ctx.lineTo(x1 - sk, y1); ctx.lineTo(x0, y1); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = S.colors.accent; ctx.fillRect(x0, y1, (x1 - x0) * 0.6, Math.max(ac, 4 * L.u));
+  };
+  return null;
+}
+
+function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16);
+  const c = v => Math.round(clamp(v + (f < 0 ? v * f : (255 - v) * f), 0, 255));
+  return `rgb(${c(n >> 16)},${c((n >> 8) & 255)},${c(n & 255)})`;
+}
+
+// Template-specific decoration. 'under' runs before the photo, 'over' after it (before text and bar).
+function drawDecor(L, phase) {
+  const S = state, T = S.template, C = S.colors, W = S.w, H = S.h, u = L.u, pad = L.pad, ac = L.ac, D = L.deco, ph = L.photo;
+  const poly = (pts, fill) => {
+    ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill();
+  };
+  if (phase === 'under') {
+    if (T === 'cardcircle') {
+      ctx.fillStyle = lum(C.bg) < 0.5 ? 'rgba(255,255,255,0.08)' : '#ffffff';
+      rr(D.card.x, D.card.y, D.card.w, D.card.h, L.r); ctx.fill();
+      ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(D.cx + D.d * 0.05, D.cy + D.d * 0.05, D.d / 2, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = C.accent; ctx.lineWidth = Math.max(ac * 0.4, 2 * u);
+      ctx.beginPath(); ctx.arc(D.cx - D.d * 0.52, D.cy - D.d * 0.58, D.d * 0.05, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(D.cx + D.d * 0.5, D.cy - D.d * 0.62, D.d * 0.03, 0, Math.PI * 2); ctx.stroke();
+    } else if (T === 'hexside') {
+      const s = W * 0.14;
+      ctx.fillStyle = C.accent; rr(W - s, 0, s, s * 0.9, [0, 0, 0, s * 0.5]); ctx.fill();
+      rr(W - s * 0.8, L.barTop - s * 0.9, s * 0.8, s * 0.9, [s * 0.4, 0, 0, 0]); ctx.fill();
+      ctx.fillStyle = C.bar; rr(0, 0, s * 0.8, s * 0.7, [0, 0, s * 0.5, 0]); ctx.fill();
+    } else if (T === 'octagon') {
+      poly([[W * 0.84, 0], [W, 0], [W, W * 0.16]], C.accent);
+      poly([[0, L.barTop - W * 0.16], [W * 0.16, L.barTop], [0, L.barTop]], C.accent);
+    } else if (T === 'tilt') {
+      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, C.bar); g.addColorStop(1, shade(C.bar, -0.4));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      const rx = ph.x + ph.w / 2, ry = ph.y + ph.h / 2;
+      ctx.save(); ctx.translate(rx, ry); ctx.rotate(0.05); ctx.translate(-rx, -ry);
+      ctx.fillStyle = 'rgba(255,255,255,0.18)'; rr(ph.x, ph.y, ph.w, ph.h, L.r); ctx.fill(); ctx.restore();
+    } else if (T === 'editorial') {
+      poly([[0, 0], [W * 0.12, 0], [0, W * 0.09]], C.bar);
+      if (D.hasText) { ctx.fillStyle = C.bar; ctx.fillRect(pad, D.lineY, W - 2 * pad, D.lineH); }
+    }
+    return;
+  }
+  // phase === 'over'
+  if (T === 'neon') {
+    const o = L.m * 0.4;
+    ctx.strokeStyle = C.accent; ctx.lineWidth = Math.max(ac * 0.7, 3 * u);
+    rr(ph.x - o, ph.y + o, ph.w, ph.h, L.r); ctx.stroke();
+  } else if (T === 'slantpanel') {
+    const t = ac * 2.4 + 8 * u;
+    poly([[D.pw, 0], [D.pw + t, 0], [D.pw - D.sl + t, D.ph], [D.pw - D.sl, D.ph]], C.accent);
+    poly([[0, 0], [D.pw, 0], [D.pw - D.sl, D.ph], [0, D.ph]], C.bar);
+  } else if (T === 'glass') {
+    ctx.fillStyle = rgba(C.bar, 0.8); rr(D.panel.x, D.panel.y, D.panel.w, D.panel.h, L.r); ctx.fill();
+  } else if (T === 'news') {
+    const tw = W * 0.13, x0 = W - pad * 1.2 - tw;
+    poly([[x0, 0], [x0 + tw, 0], [x0 + tw, tw * 1.25], [x0 + tw / 2, tw * 1.0], [x0, tw * 1.25]], C.bar);
+  } else if (T === 'fade') {
+    const y0 = ph.h * 0.4, g = ctx.createLinearGradient(0, y0, 0, ph.h * 0.9);
+    g.addColorStop(0, rgba(C.bg, 0)); g.addColorStop(1, rgba(C.bg, 1));
+    ctx.fillStyle = g; ctx.fillRect(0, y0, W, ph.h - y0 + 1);
+  } else if (T === 'editorial') {
+    poly([[W * 0.56, ph.y + ph.h * 0.36], [W * 0.76, ph.y + ph.h * 0.05], [W, ph.y + ph.h * 0.03], [W, ph.y + ph.h * 0.72], [W * 0.76, ph.y + ph.h * 0.72]], C.bar);
+  }
+}
+
 function drawText(tb, area, pad, u, onBg, band) {
   const H = state.headline;
-  const pos = area.pos || H.pos;
+  const pos = area.pos || H.pos, al = area.align || H.align;
   let y;
   if (pos === 'top') y = area.y0;
   else if (pos === 'bottom') y = area.y1 - tb.h;
   else y = (area.y0 + area.y1) / 2 - tb.h / 2;
-  if (band) { ctx.fillStyle = band; ctx.fillRect(area.x, y - pad * 0.5, area.w, tb.h + pad); }
+  if (band) band(y, tb.h);
   tb.blocks.forEach((b, bi) => {
     const T = b.T, bx = T.bxOn ? T.bxPad * u : 0;
     let ax;
-    if (H.align === 'left') ax = area.x + pad + bx; else if (H.align === 'right') ax = area.x + area.w - pad - bx; else ax = area.x + area.w / 2;
-    b.lines.forEach(ln => { drawLine(T, ln, ax, y, b.size, b.lh, H.align, u, onBg ? T.colorBg : T.color); y += b.lh; });
+    if (al === 'left') ax = area.x + pad + bx; else if (al === 'right') ax = area.x + area.w - pad - bx; else ax = area.x + area.w / 2;
+    b.lines.forEach(ln => { drawLine(T, ln, ax, y, b.size, b.lh, al, u, onBg ? T.colorBg : T.color); y += b.lh; });
     if (bi === 0) y += tb.gap;
   });
   resetSpacing();
@@ -546,11 +713,11 @@ function drawBar(L, T) {
     if (ac > 0) { ctx.fillStyle = S.colors.accent; poly(-ac * 1.6); ctx.fill(); }
     ctx.fillStyle = S.colors.bar; poly(0); ctx.fill();
   } else {
-    const topLine = ['classic', 'arch', 'circle', 'magazine', 'pill', 'split', 'ribbon', 'header', 'diamond', 'hexagon', 'slant', 'duotone'].includes(T);
+    const topLine = ['classic', 'arch', 'circle', 'magazine', 'pill', 'split', 'ribbon', 'header', 'diamond', 'hexagon', 'slant', 'duotone', 'hexside', 'slantpanel', 'glass', 'news', 'octagon', 'fade', 'editorial'].includes(T);
     if (topLine && ac > 0) { ctx.fillStyle = S.colors.accent; ctx.fillRect(bar.x, bar.y - ac, bar.w, ac); }
     if (T === 'pop' && ac > 0) { ctx.fillStyle = S.colors.accent; ctx.fillRect(bar.x, bar.y, bar.w, ac); }
-    ctx.fillStyle = S.colors.bar; rr(bar.x, bar.y, bar.w, bar.h, rad); ctx.fill();
-    if (['overlay', 'framed', 'leaf', 'leafr'].includes(T) && ac > 0) {
+    ctx.fillStyle = T === 'tilt' ? 'rgba(255,255,255,0.14)' : S.colors.bar; rr(bar.x, bar.y, bar.w, bar.h, rad); ctx.fill();
+    if (['overlay', 'framed', 'leaf', 'leafr', 'neon', 'cardcircle', 'tilt'].includes(T) && ac > 0) {
       ctx.strokeStyle = S.colors.accent; ctx.lineWidth = ac * 0.5;
       rr(bar.x, bar.y, bar.w, bar.h, rad); ctx.stroke();
     }

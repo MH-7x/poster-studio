@@ -22,7 +22,7 @@ It runs entirely in your browser. There is nothing to install, no account to cre
 - [Live demo](https://posterstudioapp.vercel.app/)
 - [Quick start](#quick-start)
 - [How to make your first poster](#how-to-make-your-first-poster)
-- [Frame template gallery](#frame-template-gallery-26-layouts)
+- [Frame template gallery](#frame-template-gallery-36-layouts)
 - [Editing text and effects](#editing-text-and-effects)
 - [Color themes](#color-themes)
 - [Brand: logo and contact bar](#brand-logo-and-contact-bar)
@@ -58,7 +58,7 @@ Typical uses: _"3 Ton Pickup for Rent"_ ads, product promotions, sale announceme
 
 |                                           |                                                                                                                                                                                                                                                                                            |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **26 frame templates**                    | Classic, Overlay, Framed, Diagonal, Wave, Pop, Leaf, Outline, Arch, Circle, Magazine, Ribbon, Curve, Pill, Leaf Flip, Split, Header, Diamond, Hexagon, Slant, Corner Cut, Stack, Border, Duotone, Slope Right and Zigzag. Template previews are drawn live with your own photo and colors. |
+| **36 frame templates**                    | Classic, Overlay, Framed, Diagonal, Wave, Pop, Leaf, Outline, Arch, Circle, Magazine, Ribbon, Curve, Pill, Leaf Flip, Split, Header, Diamond, Hexagon, Slant, Corner Cut, Stack, Border, Duotone, Slope Right, Zigzag, Neon Frame, Card Circle, Hex Side, Slant Panel, Glass Panel, Headline News, Tilt Card, Octagon, Fade and Editorial. Template previews are drawn live with your own photo and colors. |
 | **48 color themes**                       | One click sets the background, bar, accent and text colors together. Or pick every color yourself.                                                                                                                                                                                         |
 | **Full headline and subtitle styling**    | 21 fonts, weight, size, letter spacing, line height, uppercase, italic, gradient fill, shadow or glow, outline and highlight box. Seven one-click quick styles.                                                                                                                            |
 | **Logo and contact bar**                  | Upload your logo once. Add phone, email, website, address, handle or Instagram with icons. Reorder, hide or add items.                                                                                                                                                                     |
@@ -119,11 +119,11 @@ The first four steps take about a minute. After that, your logo and contact deta
 
 ---
 
-## Frame template gallery (26 layouts)
+## Frame template gallery (36 layouts)
 
 Every layout below is a real export from Poster Studio with its **default settings**: the default color theme, headline and contact bar, and an empty photo placeholder. Add your own photo, logo and colors and each one becomes yours.
 
-![The Layout tab lists all 26 frame templates with live thumbnails](docs/screenshots/02-layout-templates.png)
+![The Layout tab lists all 36 frame templates with live thumbnails](docs/screenshots/02-layout-templates.png)
 
 | | | | |
 |:---:|:---:|:---:|:---:|
@@ -133,7 +133,9 @@ Every layout below is a real export from Poster Studio with its **default settin
 | <img src="docs/posters/curve.jpg" width="220" alt="Curve poster layout: rounded photo corners flowing into the bar"><br>**Curve** | <img src="docs/posters/pill.jpg" width="220" alt="Pill poster layout: capsule-shaped photo"><br>**Pill** | <img src="docs/posters/leafr.jpg" width="220" alt="Leaf Flip poster layout: mirrored diagonal rounded corners"><br>**Leaf Flip** | <img src="docs/posters/split.jpg" width="220" alt="Split poster layout: photo on the left and headline on the right"><br>**Split** |
 | <img src="docs/posters/header.jpg" width="220" alt="Header poster layout: headline above a full-width photo"><br>**Header** | <img src="docs/posters/diamond.jpg" width="220" alt="Diamond poster layout: diamond-shaped photo"><br>**Diamond** | <img src="docs/posters/hexagon.jpg" width="220" alt="Hexagon poster layout: hexagon-shaped photo"><br>**Hexagon** | <img src="docs/posters/slant.jpg" width="220" alt="Slant poster layout: parallelogram photo"><br>**Slant** |
 | <img src="docs/posters/cut.jpg" width="220" alt="Corner Cut poster layout: photo with a cut corner"><br>**Corner Cut** | <img src="docs/posters/stack.jpg" width="220" alt="Stack poster layout: layered offset cards behind the photo"><br>**Stack** | <img src="docs/posters/border.jpg" width="220" alt="Border poster layout: thick colored frame"><br>**Border** | <img src="docs/posters/duotone.jpg" width="220" alt="Duotone poster layout: two-tone color-graded photo"><br>**Duotone** |
-| <img src="docs/posters/diagonalr.jpg" width="220" alt="Slope Right poster layout: diagonal bar rising on the right"><br>**Slope Right** | <img src="docs/posters/zigzag.jpg" width="220" alt="Zigzag poster layout: zigzag contact bar edge"><br>**Zigzag** |  |  |
+| <img src="docs/posters/diagonalr.jpg" width="220" alt="Slope Right poster layout: diagonal bar rising on the right"><br>**Slope Right** | <img src="docs/posters/zigzag.jpg" width="220" alt="Zigzag poster layout: zigzag contact bar edge"><br>**Zigzag** | <img src="docs/posters/neon.jpg" width="220" alt="Neon Frame poster layout: offset accent outline around a rounded photo"><br>**Neon Frame** | <img src="docs/posters/cardcircle.jpg" width="220" alt="Card Circle poster layout: white card with a round photo and an outlined contact bar"><br>**Card Circle** |
+| <img src="docs/posters/hexside.jpg" width="220" alt="Hex Side poster layout: headline on the left and a hexagon photo on the right"><br>**Hex Side** | <img src="docs/posters/slantpanel.jpg" width="220" alt="Slant Panel poster layout: solid angled text panel over the photo"><br>**Slant Panel** | <img src="docs/posters/glass.jpg" width="220" alt="Glass Panel poster layout: translucent text panel over the photo"><br>**Glass Panel** | <img src="docs/posters/news.jpg" width="220" alt="Headline News poster layout: black-and-white photo with an angled headline band"><br>**Headline News** |
+| <img src="docs/posters/tilt.jpg" width="220" alt="Tilt Card poster layout: tilted photo card on a gradient background"><br>**Tilt Card** | <img src="docs/posters/octagon.jpg" width="220" alt="Octagon poster layout: octagon photo with right-aligned text"><br>**Octagon** | <img src="docs/posters/fade.jpg" width="220" alt="Fade poster layout: photo fading into the background behind a centered headline"><br>**Fade** | <img src="docs/posters/editorial.jpg" width="220" alt="Editorial poster layout: headline and accent rule above a photo with an angled shape"><br>**Editorial** |
 
 ### Works for stories and tall formats too
 
@@ -141,7 +143,7 @@ Every layout below is a real export from Poster Studio with its **default settin
 
 The same frame adapts to any size, shown here at **1080×1920** (Instagram and Facebook Story or Reel).
 
-> Layouts such as **Arch, Circle, Pill, Header, Diamond, Hexagon, Slant, Split and Magazine** place the headline on the _background_ instead of on top of the photo. For those, the text color control in the Text tab edits the "text on background" color, and a hint appears to remind you.
+> Layouts such as **Arch, Circle, Pill, Header, Diamond, Hexagon, Slant, Split, Magazine, Card Circle, Hex Side, Octagon, Fade and Editorial** place the headline on the _background_ instead of on top of the photo. For those, the text color control in the Text tab edits the "text on background" color, and a hint appears to remind you. **Slant Panel, Glass Panel, Tilt Card and Headline News** put the text on a colored panel or band, so they use the normal text color. Text in a narrow area shrinks automatically so long words never spill out.
 
 ---
 
