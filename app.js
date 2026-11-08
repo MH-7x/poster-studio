@@ -28,9 +28,7 @@ const DEFAULTS = {
   logo: { src: '', size: 120, placement: 'bar-left' },
   contacts: [
     { type: 'phone', value: '+1 234 567 890', on: true },
-    { type: 'mail', value: 'hello@yourbrand.com', on: true },
-    { type: 'web', value: 'www.yourbrand.com', on: true },
-    { type: 'pin', value: '123 Main Street, Your City', on: true }
+    { type: 'web', value: 'www.yourbrand.com', on: true }
   ],
   contactSize: 26, cols: 0, iconStyle: 'circle'
 };

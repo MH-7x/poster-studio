@@ -4,12 +4,14 @@
 
 It runs entirely in your browser. There is nothing to install, no account to create, no watermark, and your images never leave your computer.
 
+### 👉 [Try the live app: posterstudioapp.vercel.app](https://posterstudioapp.vercel.app/)
+
 ![MIT License](https://img.shields.io/badge/license-MIT-blue)
 ![Built with](https://img.shields.io/badge/built%20with-HTML%20%7C%20CSS%20%7C%20JavaScript-orange)
 ![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Works offline](https://img.shields.io/badge/runs-100%25%20in%20your%20browser-informational)
 
-![Poster Studio editor: choose a frame template, upload a photo and see the poster update live](docs/screenshots/01-editor-overview.png)
+![Poster Studio editor with the default Classic frame, default headline and a contact bar showing a phone number and website](docs/screenshots/01-editor-overview.png)
 
 ---
 
@@ -17,6 +19,7 @@ It runs entirely in your browser. There is nothing to install, no account to cre
 
 - [Why Poster Studio?](#why-poster-studio)
 - [Features](#features)
+- [Live demo](https://posterstudioapp.vercel.app/)
 - [Quick start](#quick-start)
 - [How to make your first poster](#how-to-make-your-first-poster)
 - [Frame template gallery](#frame-template-gallery-26-layouts)
@@ -72,14 +75,18 @@ Typical uses: _"3 Ton Pickup for Rent"_ ads, product promotions, sale announceme
 
 ## Quick start
 
-### Option 1: just open it
+### Option 1: use it online
+
+Open **[posterstudioapp.vercel.app](https://posterstudioapp.vercel.app/)**. Nothing to download or sign up for.
+
+### Option 2: run it on your computer
 
 1. Download or clone this project.
 2. Double-click **`index.html`**.
 
 That is all. It opens in your default browser and works straight away.
 
-### Option 2: run a tiny local server (optional)
+### Option 3: run a tiny local server (optional)
 
 Handy if you prefer `http://localhost`:
 
@@ -114,17 +121,19 @@ The first four steps take about a minute. After that, your logo and contact deta
 
 ## Frame template gallery (26 layouts)
 
-Every layout below is a real export from Poster Studio, using one sample photo and a different color theme for each. Every one of them can be re-colored, resized and re-styled.
+Every layout below is a real export from Poster Studio with its **default settings**: the default color theme, headline and contact bar, and an empty photo placeholder. Add your own photo, logo and colors and each one becomes yours.
 
-|                                                                                                                                               |                                                                                                                                                  |                                                                                                                                            |                                                                                                                                 |
-| :-------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------: |
-| <img src="docs/posters/classic.jpg" width="220" alt="Classic poster layout with photo on top and a contact bar at the bottom"><br>**Classic** | <img src="docs/posters/overlay.jpg" width="220" alt="Overlay poster layout with a floating contact card over a full-bleed photo"><br>**Overlay** |  <img src="docs/posters/framed.jpg" width="220" alt="Framed poster layout with a rounded photo and card-style contact bar"><br>**Framed**  |    <img src="docs/posters/diagonal.jpg" width="220" alt="Diagonal poster layout with a slanted contact bar"><br>**Diagonal**    |
-|                <img src="docs/posters/wave.jpg" width="220" alt="Wave poster layout with a wavy contact bar edge"><br>**Wave**                |          <img src="docs/posters/pop.jpg" width="220" alt="Pop poster layout with an offset accent shadow behind the photo"><br>**Pop**           |              <img src="docs/posters/leaf.jpg" width="220" alt="Leaf poster layout with diagonal rounded corners"><br>**Leaf**              | <img src="docs/posters/circle.jpg" width="220" alt="Circle poster layout with a round photo and headline on top"><br>**Circle** |
-|                <img src="docs/posters/arch.jpg" width="220" alt="Arch poster layout with an arched photo window"><br>**Arch**                 |    <img src="docs/posters/magazine.jpg" width="220" alt="Magazine poster layout with the headline below a full-width photo"><br>**Magazine**     | <img src="docs/posters/split.jpg" width="220" alt="Split poster layout with the photo on the left and headline on the right"><br>**Split** | <img src="docs/posters/ribbon.jpg" width="220" alt="Ribbon poster layout with a solid band behind the headline"><br>**Ribbon**  |
-|        <img src="docs/posters/duotone.jpg" width="220" alt="Duotone poster layout with a two-tone color-graded photo"><br>**Duotone**         |             <img src="docs/posters/zigzag.jpg" width="220" alt="Zigzag poster layout with a zigzag contact bar edge"><br>**Zigzag**              |         <img src="docs/posters/header.jpg" width="220" alt="Header poster layout with the headline above the photo"><br>**Header**         |     <img src="docs/posters/hexagon.jpg" width="220" alt="Hexagon poster layout with a hexagon-shaped photo"><br>**Hexagon**     |
-|       <img src="docs/posters/stack.jpg" width="220" alt="Stack poster layout with layered offset cards behind the photo"><br>**Stack**        |               <img src="docs/posters/border.jpg" width="220" alt="Border poster layout with a thick colored frame"><br>**Border**                |   <img src="docs/posters/curve.jpg" width="220" alt="Curve poster layout with rounded photo corners melting into the bar"><br>**Curve**    |        <img src="docs/posters/slant.jpg" width="220" alt="Slant poster layout with a parallelogram photo"><br>**Slant**         |
+![The Layout tab lists all 26 frame templates with live thumbnails](docs/screenshots/02-layout-templates.png)
 
-Also available: **Outline**, **Pill**, **Leaf Flip**, **Diamond**, **Corner Cut** and **Slope Right**.
+| | | | |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/posters/classic.jpg" width="220" alt="Classic poster layout: photo on top with a contact bar at the bottom"><br>**Classic** | <img src="docs/posters/overlay.jpg" width="220" alt="Overlay poster layout: floating contact card over a full-bleed photo"><br>**Overlay** | <img src="docs/posters/framed.jpg" width="220" alt="Framed poster layout: rounded photo with a card-style contact bar"><br>**Framed** | <img src="docs/posters/diagonal.jpg" width="220" alt="Diagonal poster layout: slanted contact bar"><br>**Diagonal** |
+| <img src="docs/posters/wave.jpg" width="220" alt="Wave poster layout: wavy contact bar edge"><br>**Wave** | <img src="docs/posters/pop.jpg" width="220" alt="Pop poster layout: offset accent shadow behind the photo"><br>**Pop** | <img src="docs/posters/leaf.jpg" width="220" alt="Leaf poster layout: diagonal rounded corners"><br>**Leaf** | <img src="docs/posters/outline.jpg" width="220" alt="Outline poster layout: accent keyline around the whole poster"><br>**Outline** |
+| <img src="docs/posters/arch.jpg" width="220" alt="Arch poster layout: arched photo window"><br>**Arch** | <img src="docs/posters/circle.jpg" width="220" alt="Circle poster layout: round photo with the headline above"><br>**Circle** | <img src="docs/posters/magazine.jpg" width="220" alt="Magazine poster layout: headline below a full-width photo"><br>**Magazine** | <img src="docs/posters/ribbon.jpg" width="220" alt="Ribbon poster layout: solid band behind the headline"><br>**Ribbon** |
+| <img src="docs/posters/curve.jpg" width="220" alt="Curve poster layout: rounded photo corners flowing into the bar"><br>**Curve** | <img src="docs/posters/pill.jpg" width="220" alt="Pill poster layout: capsule-shaped photo"><br>**Pill** | <img src="docs/posters/leafr.jpg" width="220" alt="Leaf Flip poster layout: mirrored diagonal rounded corners"><br>**Leaf Flip** | <img src="docs/posters/split.jpg" width="220" alt="Split poster layout: photo on the left and headline on the right"><br>**Split** |
+| <img src="docs/posters/header.jpg" width="220" alt="Header poster layout: headline above a full-width photo"><br>**Header** | <img src="docs/posters/diamond.jpg" width="220" alt="Diamond poster layout: diamond-shaped photo"><br>**Diamond** | <img src="docs/posters/hexagon.jpg" width="220" alt="Hexagon poster layout: hexagon-shaped photo"><br>**Hexagon** | <img src="docs/posters/slant.jpg" width="220" alt="Slant poster layout: parallelogram photo"><br>**Slant** |
+| <img src="docs/posters/cut.jpg" width="220" alt="Corner Cut poster layout: photo with a cut corner"><br>**Corner Cut** | <img src="docs/posters/stack.jpg" width="220" alt="Stack poster layout: layered offset cards behind the photo"><br>**Stack** | <img src="docs/posters/border.jpg" width="220" alt="Border poster layout: thick colored frame"><br>**Border** | <img src="docs/posters/duotone.jpg" width="220" alt="Duotone poster layout: two-tone color-graded photo"><br>**Duotone** |
+| <img src="docs/posters/diagonalr.jpg" width="220" alt="Slope Right poster layout: diagonal bar rising on the right"><br>**Slope Right** | <img src="docs/posters/zigzag.jpg" width="220" alt="Zigzag poster layout: zigzag contact bar edge"><br>**Zigzag** |  |  |
 
 ### Works for stories and tall formats too
 
@@ -140,7 +149,7 @@ The same frame adapts to any size, shown here at **1080×1920** (Instagram and F
 
 Open the **Text** tab to edit the **Headline** and **Subtitle** separately.
 
-![Text tab with headline styling, quick styles, fonts and effects](docs/screenshots/02-text-effects.png)
+![Text tab with headline styling, quick styles, fonts and effects](docs/screenshots/04-text-styling.png)
 
 **Quick styles (one click):** Clean · Soft shadow · Hard shadow · Neon glow · Outline · Highlight · Gradient
 
@@ -153,6 +162,8 @@ Open the **Text** tab to edit the **Headline** and **Subtitle** separately.
 - **Highlight box:** a colored label behind each line, with padding and rounded corners.
 - **Placement:** top, middle or bottom, with left, center or right alignment, plus an optional dark gradient behind the text so white text stays readable on bright photos.
 
+![Text tab effects: gradient fill, shadow or glow, outline, highlight box and placement](docs/screenshots/05-text-effects.png)
+
 **Fonts included:** Poppins, Montserrat, Roboto, Raleway, Oswald, Bebas Neue, Anton, Archivo Black, Playfair Display, Lora, Abril Fatface, Lobster, Pacifico, Dancing Script, Permanent Marker, Righteous, plus the system fonts Segoe UI, Arial, Georgia, Impact and Verdana.
 
 ---
@@ -161,7 +172,7 @@ Open the **Text** tab to edit the **Headline** and **Subtitle** separately.
 
 48 ready-made themes cover business blues, luxury golds, fresh greens, bold neons and soft pastels. Each theme sets the background, contact bar, accent, bar text and text-on-background colors together, so they always work well as a set.
 
-![Color themes tab showing a grid of 48 ready-made palettes](docs/screenshots/03-color-themes.png)
+![Color themes tab showing a grid of 48 ready-made palettes](docs/screenshots/07-color-themes.png)
 
 Want a custom look? Use the four color pickers under **Customize** to fine-tune the background, bar, accent and bar text. Headline and subtitle colors live in the **Text** tab.
 
@@ -171,7 +182,7 @@ Want a custom look? Use the four color pickers under **Customize** to fine-tune 
 
 This is the heart of the app: set it up **once** and it is remembered next time you open Poster Studio.
 
-![Brand tab with logo upload, placement options and an editable contact list](docs/screenshots/04-brand-contact-bar.png)
+![Brand tab with logo upload, placement options and an editable contact list](docs/screenshots/06-brand-contact-bar.png)
 
 **Logo**
 
@@ -181,6 +192,7 @@ This is the heart of the app: set it up **once** and it is remembered next time 
 
 **Contact bar**
 
+- The bar starts with two items, a **phone number** and a **website**. Press **+ Add contact item** to add more.
 - Six icon types: **Phone, Email, Website, Address, Handle (@), Instagram**.
 - Switch any item on or off, reorder it with the arrows, delete it, or add as many as you need.
 - Choose 1 to 4 columns (or Auto), text size, font and icon style (circle, plain or none).
@@ -190,7 +202,7 @@ This is the heart of the app: set it up **once** and it is remembered next time 
 
 ## Photo controls
 
-![Photo tab with upload, zoom and adjustment sliders](docs/screenshots/05-photo-controls.png)
+![Photo tab with upload, zoom and adjustment sliders](docs/screenshots/03-photo-controls.png)
 
 - **Drag** the photo on the preview to choose what is visible.
 - **Scroll** over the photo (or use the Zoom slider) to zoom from 1× to 5×.
@@ -222,11 +234,11 @@ Layouts scale proportionally, so a frame that looks good on a square post also w
 
 ## Saving, sharing and exporting
 
-![Saved tab with named designs, load, delete, export and import](docs/screenshots/06-saved-designs.png)
+![Saved tab with named designs, load, delete, export and import](docs/screenshots/08-saved-designs.png)
 
 **Downloading your poster**
 
-![Download menu with PNG and JPG options and a 1x or 2x size switch](docs/screenshots/07-download-menu.png)
+![Download menu with PNG and JPG options and a 1x or 2x size switch](docs/screenshots/09-download-menu.png)
 
 - Choose **PNG** (best quality) or **JPG** (smaller file).
 - Choose **1× size** or **2× sharp** for crisp results on high-resolution screens and in print.
@@ -239,6 +251,14 @@ Layouts scale proportionally, so a frame that looks good on a square post also w
 - Use the **Saved** tab to store named designs such as "Weekend sale" or "New listing", then load or delete them later.
 - **Export .json** creates a small template file you can back up or send to a teammate. **Import .json** loads it again.
 - Saved designs include everything _except the photo_, so a template stays small and reusable.
+
+---
+
+## Works on phones and tablets
+
+The editor adapts to small screens. The preview stays pinned at the top while you scroll through the controls below it.
+
+<img src="docs/screenshots/10-mobile.png" width="280" alt="Poster Studio on a phone: the preview stays at the top with the editor tabs underneath">
 
 ---
 
@@ -322,7 +342,6 @@ Created by **Mashal Huraira**.
 
 If Poster Studio saves you time, a star on the repository helps others find it.
 
-<sub>The sample photo and the "Northwind Moving & Haulage" brand shown in the screenshots are illustrative examples created for this README, not real businesses.</sub>
 
 <!--
 Suggested GitHub repository description:
